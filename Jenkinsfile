@@ -55,15 +55,13 @@ pipeline {
                 sh 'docker ps'
             }
         }
-
-    }
-   stage('Push to Docker Hub') {
-    steps {
-        withCredentials([usernamePassword(
-            credentialsId: 'dockerHubCred',
-            usernameVariable: 'DOCKER_USER',
+        stage('Push to Docker Hub') {
+             steps {
+               withCredentials([usernamePassword(
+               credentialsId: 'dockerHubCred',
+               usernameVariable: 'DOCKER_USER',
             passwordVariable: 'DOCKER_PASS'
-        )]) {
+              )]) {
 
             sh '''
             echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
@@ -72,9 +70,9 @@ pipeline {
 
             docker push $DOCKER_USER/images-demo:latest
             '''
-        }
-    }
-}
+            }
+         }
+      }
     
 
     post {
