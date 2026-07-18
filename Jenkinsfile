@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'lingu'}
+    agent { label 'lingu' }
 
     environment {
         IMAGE_NAME = "node-web"
@@ -16,7 +16,7 @@ pipeline {
             }
         }
 
-        stage("Verify Docker") {
+        stage('Verify Docker') {
             steps {
                 sh 'docker --version'
                 sh 'docker info'
@@ -55,25 +55,29 @@ pipeline {
                 sh 'docker ps'
             }
         }
+
         stage('Push to Docker Hub') {
-             steps {
-               withCredentials([usernamePassword(
-               credentialsId: 'dockerHubCred',
-               usernameVariable: 'DOCKER_USER',
-            passwordVariable: 'DOCKER_PASS'
-              )]) {
+            steps {
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'dockerHubCred',
+                        usernameVariable: 'DOCKER_USER',
+                        passwordVariable: 'DOCKER_PASS'
+                    )
+                ]) {
 
-            sh '''
-            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    sh '''
+                    echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 
-            docker tag images-demo:latest $DOCKER_USER/images-demo:latest
+                    docker tag ${IMAGE_NAME}:${IMAGE_TAG} $DOCKER_USER/${IMAGE_NAME}:${IMAGE_TAG}
 
-            docker push $DOCKER_USER/images-demo:latest
-            '''
+                    docker push $DOCKER_USER/${IMAGE_NAME}:${IMAGE_TAG}
+                    '''
+                }
             }
-         }
-      }
-    
+        }
+
+    }   // <-- Close stages
 
     post {
 
@@ -88,6 +92,5 @@ pipeline {
         always {
             echo "Pipeline finished."
         }
-
     }
 }
