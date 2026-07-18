@@ -57,15 +57,24 @@ pipeline {
         }
 
     }
-    stage("push to dockerhub"){
-        steps{
-            withCredentials([usernamePassword('credentialsId':"dockerHubCred",
-                passwordVariable:"dockerHubPass",
-                usernameVariable:"dockerHubUser")]){
-                    sh "docker login -u ${dockerHubUser} -p ${dockerHubPass}"
-                    sh "docker tag img ${dockerHubUser}/cicd:latest"
-                    sh "docker push ${dockerHubUser}/cicd:latest"
+   stage('Push to Docker Hub') {
+    steps {
+        withCredentials([usernamePassword(
+            credentialsId: 'dockerHubCred',
+            usernameVariable: 'DOCKER_USER',
+            passwordVariable: 'DOCKER_PASS'
+        )]) {
+
+            sh '''
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+
+            docker tag images-demo:latest $DOCKER_USER/images-demo:latest
+
+            docker push $DOCKER_USER/images-demo:latest
+            '''
         }
+    }
+}
     }
 
     post {
