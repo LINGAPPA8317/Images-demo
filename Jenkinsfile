@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent { label 'lingu'}
 
     environment {
         IMAGE_NAME = "node-web"
