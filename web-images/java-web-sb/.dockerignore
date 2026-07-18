@@ -1,0 +1,38 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+README.md
+
+# Node.js
+**/node_modules/
+
+# Java
+**/target/
+
+# Python
+**/__pycache__/
+**/*.pyc
+**/.venv/
+**/venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+**/*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+
+# Temporary files
+*.tmp
+*.swp
