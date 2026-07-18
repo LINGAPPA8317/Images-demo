@@ -16,7 +16,7 @@ pipeline {
             }
         }
 
-        stage('Verify Docker') {
+        stage("Verify Docker") {
             steps {
                 sh 'docker --version'
                 sh 'docker info'
