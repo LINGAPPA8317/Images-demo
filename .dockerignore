@@ -33,6 +33,6 @@ Thumbs.db
 .env
 .env.*
 
-# Temporary files
+# Temporary files ..
 *.tmp
 *.swp
